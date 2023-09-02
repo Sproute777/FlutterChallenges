@@ -15,22 +15,18 @@ class ActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20),
-      child: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        height: 50,
-        child: ElevatedButton(
-          onPressed: action,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: PalleteColor.actionButtonColor,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-          ),
-          child: Text(
-            label,
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
+      child: ElevatedButton(
+        onPressed: action,
+        style: ElevatedButton.styleFrom(
+          maximumSize: const Size(double.maxFinite, 50),
+          backgroundColor: PalleteColor.actionButtonColor,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+        ),
+        child: Text(
+          label,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
