@@ -171,11 +171,6 @@ class __CountryTopSelectionState extends State<_CountryTopSelection> {
               country: state.countries[index],
               isSelected: index == state.selected,
               onChange: () {
-                // scrollController.animateTo(
-                //   index.toDouble() * MediaQuery.of(context).size.height * .13,
-                //   duration: const Duration(milliseconds: 500),
-                //   curve: Curves.easeIn,
-                // );
                 cubit.changeCountry(index);
               },
             ),
@@ -194,18 +189,18 @@ class _CountryTravelCarousel extends StatefulWidget {
 }
 
 class __CountryTravelCarouselState extends State<_CountryTravelCarousel> {
-  final PageController pageController = PageController(viewportFraction: .83);
-  double lastPosition = 0;
-  bool enableChangeScrollPosition = true;
+  late final PageController _pageController;
   int selected = 0;
+
   @override
   void initState() {
     super.initState();
+    _pageController = PageController(viewportFraction: .83);
   }
 
   @override
   void dispose() {
-    pageController.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 
@@ -222,7 +217,7 @@ class __CountryTravelCarouselState extends State<_CountryTravelCarousel> {
     return Expanded(
       child: BlocConsumer<TravelAppCubit, TravelAppState>(
         listener: (context, state) {
-          pageController.animateToPage(
+          _pageController.animateToPage(
             state.selected,
             duration: const Duration(milliseconds: 500),
             curve: Curves.easeIn,
@@ -230,7 +225,7 @@ class __CountryTravelCarouselState extends State<_CountryTravelCarousel> {
         },
         builder: (context, state) {
           return PageView.builder(
-            controller: pageController,
+            controller: _pageController,
             itemCount: state.countries.length,
             onPageChanged: _onPageChanged,
             scrollBehavior: const MaterialScrollBehavior(),
@@ -239,14 +234,14 @@ class __CountryTravelCarouselState extends State<_CountryTravelCarousel> {
               final country = state.countries[index];
               return GestureDetector(
                 onTap: () {
-                  if (pageController.page == index.toDouble()) {
+                  if (_pageController.page == index.toDouble()) {
                     Navigator.of(context).pushNamed(
                       Routes.travelCountryDetails,
                       arguments: country,
                     );
                   } else {
                     context.read<TravelAppCubit>().changeCountry(index);
-                    pageController.animateToPage(
+                    _pageController.animateToPage(
                       index,
                       duration: const Duration(milliseconds: 500),
                       curve: Curves.easeIn,
