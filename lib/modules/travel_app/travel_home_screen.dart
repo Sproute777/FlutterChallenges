@@ -51,8 +51,8 @@ class _BottomBar extends StatelessWidget {
         borderRadius: BorderRadius.circular(300),
         color: const Color(0xfff37f10),
       ),
-      child: Row(
-        children: const [
+      child: const Row(
+        children: [
           _BottomBarItem(
             icon: 'assets/travel_app/explore.svg',
             isSelected: true,
@@ -104,26 +104,31 @@ class _TravelHomeBody extends StatelessWidget {
     return Stack(
       children: [
         const _BackgroundRoundedContainer(),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const _TopAppBar(),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              child: Text(
-                'New Articles',
-                style: TextStyle(
-                  color: Color(0xff321F0E),
-                  fontWeight: FontWeight.w600,
-                  fontSize: 15,
+        FocusScope(
+          onFocusChange: (_) {
+            debugPrint('focusScope onFocusChange');
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const _TopAppBar(),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                child: Text(
+                  'New Articles',
+                  style: TextStyle(
+                    color: Color(0xff321F0E),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15,
+                  ),
                 ),
               ),
-            ),
-            const _CountryTopSelection(),
-            const _SearchFilter(),
-            const _CountryTravelCarousel(),
-            SizedBox(height: MediaQuery.of(context).size.height * .11)
-          ],
+              const _CountryTopSelection(),
+              const _SearchFilter(),
+              const _CountryTravelCarousel(),
+              SizedBox(height: MediaQuery.of(context).size.height * .11)
+            ],
+          ),
         )
       ],
     );
@@ -134,10 +139,10 @@ class _CountryTopSelection extends StatefulWidget {
   const _CountryTopSelection();
 
   @override
-  __CountryTopSelectionState createState() => __CountryTopSelectionState();
+  _CountryTopSelectionState createState() => _CountryTopSelectionState();
 }
 
-class __CountryTopSelectionState extends State<_CountryTopSelection> {
+class _CountryTopSelectionState extends State<_CountryTopSelection> {
   late final ItemScrollController _itemScrollController;
 
   @override
@@ -171,6 +176,7 @@ class __CountryTopSelectionState extends State<_CountryTopSelection> {
               country: state.countries[index],
               isSelected: index == state.selected,
               onChange: () {
+                FocusScope.of(context).unfocus();
                 cubit.changeCountry(index);
               },
             ),
@@ -185,17 +191,19 @@ class _CountryTravelCarousel extends StatefulWidget {
   const _CountryTravelCarousel();
 
   @override
-  __CountryTravelCarouselState createState() => __CountryTravelCarouselState();
+  _CountryTravelCarouselState createState() => _CountryTravelCarouselState();
 }
 
-class __CountryTravelCarouselState extends State<_CountryTravelCarousel> {
+class _CountryTravelCarouselState extends State<_CountryTravelCarousel> {
   late final PageController _pageController;
+  late final FocusNode _focusNode;
   int selected = 0;
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController(viewportFraction: .83);
+    _focusNode = FocusNode();
   }
 
   @override
@@ -205,10 +213,12 @@ class __CountryTravelCarouselState extends State<_CountryTravelCarousel> {
   }
 
   void _onPageChanged(int index) {
-    setState(() {
-      selected = index;
-    });
-    context.read<TravelAppCubit>().changeCountry(index);
+    if (_focusNode.hasFocus) {
+      setState(() {
+        selected = index;
+      });
+      context.read<TravelAppCubit>().changeCountry(index);
+    }
   }
 
   @override
@@ -224,121 +234,138 @@ class __CountryTravelCarouselState extends State<_CountryTravelCarousel> {
           );
         },
         builder: (context, state) {
-          return PageView.builder(
-            controller: _pageController,
-            itemCount: state.countries.length,
-            onPageChanged: _onPageChanged,
-            scrollBehavior: const MaterialScrollBehavior(),
-            physics: const ClampingScrollPhysics(),
-            itemBuilder: (context, index) {
-              final country = state.countries[index];
-              return GestureDetector(
-                onTap: () {
-                  if (_pageController.page == index.toDouble()) {
-                    Navigator.of(context).pushNamed(
-                      Routes.travelCountryDetails,
-                      arguments: country,
-                    );
-                  } else {
-                    context.read<TravelAppCubit>().changeCountry(index);
-                    _pageController.animateToPage(
-                      index,
-                      duration: const Duration(milliseconds: 500),
-                      curve: Curves.easeIn,
-                    );
+          return Focus(
+            focusNode: _focusNode,
+            child: NotificationListener<ScrollNotification>(
+              onNotification: (scrollNotification) {
+                if (scrollNotification is UserScrollNotification) {
+                  if (!_focusNode.hasFocus) {
+                    debugPrint('on user scrollNotification');
+                    FocusScope.of(context)
+                      ..unfocus()
+                      ..requestFocus(_focusNode);
                   }
-                },
-                child: TweenAnimationBuilder<double>(
-                  tween: Tween(
-                    begin: 0.85,
-                    end: state.selected == index ? 1.0 : 0.85,
-                  ),
-                  duration: const Duration(milliseconds: 500),
-                  builder: (context, anim, _) {
-                    return Transform.scale(
-                      scale: anim,
-                      child: Stack(
-                        children: [
-                          Positioned(
-                            child: Hero(
-                              tag: 'country-${country.name}',
-                              child: ClipRRect(
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(24),
-                                ),
-                                child: SizedBox(
-                                  height: size.height * .55,
-                                  width: size.width * .9,
-                                  child: Image.asset(
-                                    country.image,
-                                    fit: BoxFit.cover,
+                }
+                return true;
+              },
+              child: PageView.builder(
+                controller: _pageController,
+                itemCount: state.countries.length,
+                onPageChanged: _onPageChanged,
+                scrollBehavior: const MaterialScrollBehavior(),
+                physics: const ClampingScrollPhysics(),
+                itemBuilder: (context, index) {
+                  final country = state.countries[index];
+                  return GestureDetector(
+                    onTap: () {
+                      if (_pageController.page == index.toDouble()) {
+                        Navigator.of(context).pushNamed(
+                          Routes.travelCountryDetails,
+                          arguments: country,
+                        );
+                      } else {
+                        context.read<TravelAppCubit>().changeCountry(index);
+                        _pageController.animateToPage(
+                          index,
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.easeIn,
+                        );
+                      }
+                    },
+                    child: TweenAnimationBuilder<double>(
+                      tween: Tween(
+                        begin: 0.85,
+                        end: state.selected == index ? 1.0 : 0.85,
+                      ),
+                      duration: const Duration(milliseconds: 500),
+                      builder: (context, anim, _) {
+                        return Transform.scale(
+                          scale: anim,
+                          child: Stack(
+                            children: [
+                              Positioned(
+                                child: Hero(
+                                  tag: 'country-${country.name}',
+                                  child: ClipRRect(
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(24),
+                                    ),
+                                    child: SizedBox(
+                                      height: size.height * .55,
+                                      width: size.width * .9,
+                                      child: Image.asset(
+                                        country.image,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ),
-                          Positioned(
-                            bottom: 0,
-                            child: Hero(
-                              tag: 'country-trip-${country.name}',
-                              flightShuttleBuilder: _flightShuttleBuilder,
-                              child: Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      country.reviewDetail.title,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 24,
-                                      ),
-                                    ),
-                                    Text(
-                                      country.reviewDetail.description,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w300,
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Row(
+                              Positioned(
+                                bottom: 0,
+                                child: Hero(
+                                  tag: 'country-trip-${country.name}',
+                                  flightShuttleBuilder: _flightShuttleBuilder,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(20),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        CircleAvatar(
-                                          radius: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              .015,
-                                          backgroundImage: AssetImage(
-                                            country.reviewerPhoto,
-                                          ),
-                                        ),
-                                        const SizedBox(width: 10),
                                         Text(
-                                          country.reviewer,
+                                          country.reviewDetail.title,
                                           style: const TextStyle(
                                             color: Colors.white,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 13,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 24,
                                           ),
+                                        ),
+                                        Text(
+                                          country.reviewDetail.description,
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w300,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Row(
+                                          children: [
+                                            CircleAvatar(
+                                              radius: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  .015,
+                                              backgroundImage: AssetImage(
+                                                country.reviewerPhoto,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 10),
+                                            Text(
+                                              country.reviewer,
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 13,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
-                                  ],
+                                  ),
                                 ),
                               ),
-                            ),
+                            ],
                           ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              );
-            },
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
+            ),
           );
         },
       ),
