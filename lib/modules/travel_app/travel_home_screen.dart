@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutterchallenges/modules/travel_app/country.dart';
 import 'package:flutterchallenges/modules/travel_app/travel_app_bloc.dart';
 import 'package:flutterchallenges/navigation/routes.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class TravelHomeScreen extends StatelessWidget {
   const TravelHomeScreen({super.key});
@@ -139,9 +140,7 @@ class _CountryTopSelection extends StatefulWidget {
 }
 
 class __CountryTopSelectionState extends State<_CountryTopSelection> {
-  final ScrollController scrollController = ScrollController();
-  double lastPosition = 0;
-
+  final _itemScrollController = ItemScrollController();
   @override
   void initState() {
     super.initState();
@@ -150,25 +149,26 @@ class __CountryTopSelectionState extends State<_CountryTopSelection> {
   @override
   Widget build(BuildContext context) {
     final bloc = context.watch<TravelAppBloc>();
+    final size = MediaQuery.of(context).size;
     return SizedBox(
-      height: MediaQuery.of(context).size.height * .15,
+      height: size.height * .15,
+      width: size.width,
       child: BlocConsumer<TravelAppBloc, TravelAppState>(
         listener: (context, state) {
           if (state is TravelAppUpdateTopScrollPositionState) {
-            scrollController
-                .animateTo(
-                  state.position.toDouble() *
-                      MediaQuery.of(context).size.height *
-                      .13,
+            _itemScrollController
+                .scrollTo(
+                  index: state.position,
+                  alignment: 0.4,
                   duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeIn,
                 )
                 .then((value) => bloc.finishUpdateCountry());
           }
         },
         builder: (context, state) {
-          return ListView.builder(
-            controller: scrollController,
+          return ScrollablePositionedList.builder(
+            physics: const ClampingScrollPhysics(),
+            itemScrollController: _itemScrollController,
             scrollDirection: Axis.horizontal,
             itemCount: bloc.countries.length,
             itemBuilder: (context, index) => _CountryOptionTab(
@@ -176,11 +176,11 @@ class __CountryTopSelectionState extends State<_CountryTopSelection> {
               isSelected:
                   bloc.countries[index].name == bloc.selectedCountry.name,
               onChange: () {
-                scrollController.animateTo(
-                  index.toDouble() * MediaQuery.of(context).size.height * .13,
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeIn,
-                );
+                // scrollController.animateTo(
+                //   index.toDouble() * MediaQuery.of(context).size.height * .13,
+                //   duration: const Duration(milliseconds: 500),
+                //   curve: Curves.easeIn,
+                // );
                 bloc.changeCountry(bloc.countries[index]);
               },
             ),
