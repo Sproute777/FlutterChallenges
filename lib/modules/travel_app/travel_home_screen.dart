@@ -1,11 +1,9 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutterchallenges/modules/travel_app/country.dart';
-import 'package:flutterchallenges/modules/travel_app/travel_app_bloc.dart';
+import 'package:flutterchallenges/modules/travel_app/travel_app_cubit.dart';
 import 'package:flutterchallenges/navigation/routes.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
@@ -27,7 +25,7 @@ class TravelHomeScreen extends StatelessWidget {
           statusBarBrightness: Brightness.dark,
         ),
         child: BlocProvider(
-          create: (context) => TravelAppBloc(),
+          create: (context) => TravelAppCubit(),
           child: const Scaffold(
             backgroundColor: Color(0xffFCEFE3),
             body: SafeArea(bottom: false, child: _TravelHomeBody()),
@@ -150,40 +148,35 @@ class __CountryTopSelectionState extends State<_CountryTopSelection> {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.watch<TravelAppBloc>();
+    final cubit = context.watch<TravelAppCubit>();
     final size = MediaQuery.of(context).size;
     return SizedBox(
       height: size.height * .15,
       width: size.width,
-      child: BlocConsumer<TravelAppBloc, TravelAppState>(
+      child: BlocConsumer<TravelAppCubit, TravelAppState>(
         listener: (context, state) {
-          if (state is TravelAppUpdateTopScrollPositionState) {
-            _itemScrollController
-                .scrollTo(
-                  index: state.position,
-                  alignment: 0.4,
-                  duration: const Duration(milliseconds: 500),
-                )
-                .then((value) => bloc.finishUpdateCountry());
-          }
+          _itemScrollController.scrollTo(
+            index: state.selected,
+            alignment: 0.4,
+            duration: const Duration(milliseconds: 500),
+          );
         },
         builder: (context, state) {
           return ScrollablePositionedList.builder(
             physics: const ClampingScrollPhysics(),
             itemScrollController: _itemScrollController,
             scrollDirection: Axis.horizontal,
-            itemCount: bloc.countries.length,
+            itemCount: state.countries.length,
             itemBuilder: (context, index) => _CountryOptionTab(
-              country: bloc.countries[index],
-              isSelected:
-                  bloc.countries[index].name == bloc.selectedCountry.name,
+              country: state.countries[index],
+              isSelected: index == state.selected,
               onChange: () {
                 // scrollController.animateTo(
                 //   index.toDouble() * MediaQuery.of(context).size.height * .13,
                 //   duration: const Duration(milliseconds: 500),
                 //   curve: Curves.easeIn,
                 // );
-                bloc.changeCountry(bloc.countries[index]);
+                cubit.changeCountry(index);
               },
             ),
           );
@@ -204,56 +197,46 @@ class __CountryTravelCarouselState extends State<_CountryTravelCarousel> {
   final PageController pageController = PageController(viewportFraction: .83);
   double lastPosition = 0;
   bool enableChangeScrollPosition = true;
+  int selected = 0;
   @override
   void initState() {
     super.initState();
-    pageController.addListener(listener);
-  }
-
-  void listener() {
-    lastPosition = pageController.page!;
-    setState(() {});
   }
 
   @override
   void dispose() {
-    pageController
-      ..removeListener(listener)
-      ..dispose();
+    pageController.dispose();
     super.dispose();
+  }
+
+  void _onPageChanged(int index) {
+    setState(() {
+      selected = index;
+    });
+    context.read<TravelAppCubit>().changeCountry(index);
   }
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.watch<TravelAppBloc>();
     final size = MediaQuery.of(context).size;
     return Expanded(
-      child: BlocConsumer<TravelAppBloc, TravelAppState>(
+      child: BlocConsumer<TravelAppCubit, TravelAppState>(
         listener: (context, state) {
-          if (state is TravelAppUpdateCarouselScrollPositionState) {
-            pageController
-                .animateToPage(
-                  state.position,
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeIn,
-                )
-                .then((value) => bloc.finishUpdateCountry());
-          }
+          pageController.animateToPage(
+            state.selected,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeIn,
+          );
         },
         builder: (context, state) {
           return PageView.builder(
             controller: pageController,
-            itemCount: bloc.countries.length,
-            onPageChanged: (index) =>
-                bloc.changeCountry(bloc.countries[index], isCarousel: true),
+            itemCount: state.countries.length,
+            onPageChanged: _onPageChanged,
+            scrollBehavior: const MaterialScrollBehavior(),
+            physics: const ClampingScrollPhysics(),
             itemBuilder: (context, index) {
-              final country = bloc.countries[index];
-              var scale = lerpDouble(1, .9, index - lastPosition) ?? 0.0;
-              // print('index: $index');
-              // print('scale: $scale');
-              if (scale > 1.0) {
-                scale = 2 - scale;
-              }
+              final country = state.countries[index];
               return GestureDetector(
                 onTap: () {
                   if (pageController.page == index.toDouble()) {
@@ -262,7 +245,7 @@ class __CountryTravelCarouselState extends State<_CountryTravelCarousel> {
                       arguments: country,
                     );
                   } else {
-                    bloc.changeCountry(bloc.countries[index], isCarousel: true);
+                    context.read<TravelAppCubit>().changeCountry(index);
                     pageController.animateToPage(
                       index,
                       duration: const Duration(milliseconds: 500),
@@ -270,85 +253,94 @@ class __CountryTravelCarouselState extends State<_CountryTravelCarousel> {
                     );
                   }
                 },
-                child: Transform(
-                  transform: Matrix4.identity()..scale(scale),
-                  alignment: Alignment.center,
-                  child: Align(
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          child: Hero(
-                            tag: 'country-${country.name}',
-                            child: ClipRRect(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(24)),
-                              child: SizedBox(
-                                height: size.height * .55,
-                                width: size.width * .9,
-                                child: Image.asset(
-                                  country.image,
-                                  fit: BoxFit.cover,
+                child: TweenAnimationBuilder<double>(
+                  tween: Tween(
+                    begin: 0.7,
+                    end: state.selected == index ? 1.0 : 0.7,
+                  ),
+                  duration: const Duration(milliseconds: 500),
+                  builder: (context, anim, _) {
+                    return Transform.scale(
+                      scale: anim,
+                      child: Stack(
+                        children: [
+                          Positioned(
+                            child: Hero(
+                              tag: 'country-${country.name}',
+                              child: ClipRRect(
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(24),
+                                ),
+                                child: SizedBox(
+                                  height: size.height * .55,
+                                  width: size.width * .9,
+                                  child: Image.asset(
+                                    country.image,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          child: Hero(
-                            tag: 'country-trip-${country.name}',
-                            flightShuttleBuilder: _flightShuttleBuilder,
-                            child: Padding(
-                              padding: const EdgeInsets.all(20),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    country.reviewDetail.title,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 24,
-                                    ),
-                                  ),
-                                  Text(
-                                    country.reviewDetail.description,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w300,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Row(
-                                    children: [
-                                      CircleAvatar(
-                                        radius:
-                                            MediaQuery.of(context).size.height *
-                                                .015,
-                                        backgroundImage:
-                                            AssetImage(country.reviewerPhoto),
+                          Positioned(
+                            bottom: 0,
+                            child: Hero(
+                              tag: 'country-trip-${country.name}',
+                              flightShuttleBuilder: _flightShuttleBuilder,
+                              child: Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      country.reviewDetail.title,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 24,
                                       ),
-                                      const SizedBox(width: 10),
-                                      Text(
-                                        country.reviewer,
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 13,
+                                    ),
+                                    Text(
+                                      country.reviewDetail.description,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w300,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Row(
+                                      children: [
+                                        CircleAvatar(
+                                          radius: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              .015,
+                                          backgroundImage: AssetImage(
+                                            country.reviewerPhoto,
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                        const SizedBox(width: 10),
+                                        Text(
+                                          country.reviewer,
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
+                        ],
+                      ),
+                    );
+                  },
                 ),
               );
             },
