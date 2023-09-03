@@ -250,8 +250,8 @@ class __CountryTravelCarouselState extends State<_CountryTravelCarousel> {
                 },
                 child: TweenAnimationBuilder<double>(
                   tween: Tween(
-                    begin: 0.7,
-                    end: state.selected == index ? 1.0 : 0.7,
+                    begin: 0.85,
+                    end: state.selected == index ? 1.0 : 0.85,
                   ),
                   duration: const Duration(milliseconds: 500),
                   builder: (context, anim, _) {
