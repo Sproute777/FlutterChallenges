@@ -274,23 +274,25 @@ class __CountryTravelCarouselState extends State<_CountryTravelCarousel> {
                   child: Align(
                     child: Stack(
                       children: [
-                        Hero(
-                          tag: 'country-${country.name}',
-                          child: Container(
-                            height: size.height * .55,
-                            width: size.width * .9,
-                            alignment: Alignment.bottomLeft,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(24),
-                              image: DecorationImage(
-                                image: AssetImage(country.image),
-                                fit: BoxFit.fitHeight,
+                        Positioned(
+                          child: Hero(
+                            tag: 'country-${country.name}',
+                            child: ClipRRect(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(24)),
+                              child: SizedBox(
+                                height: size.height * .55,
+                                width: size.width * .9,
+                                child: Image.asset(
+                                  country.image,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                        Align(
-                          alignment: Alignment.bottomLeft,
+                        Positioned(
+                          bottom: 0,
                           child: Hero(
                             tag: 'country-trip-${country.name}',
                             flightShuttleBuilder: _flightShuttleBuilder,
