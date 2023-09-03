@@ -212,6 +212,42 @@ List<Country> countriesData = [
     ),
   ),
   const Country(
+    name: 'Italy2',
+    image: 'assets/travel_app/italy.png',
+    reviewer: 'Leslie Alexander',
+    reviewerPhoto: 'assets/travel_app/avatar.jpg',
+    reviewDetail: ReviewDetail(
+      title: 'Travel to Italy',
+      description:
+          'My trip to Italy started in Beijing, where I stayed in a beautiful '
+          'hotel called...',
+      likes: 1100,
+      location: 'Italy',
+      views: 223,
+      reviewSubtitle: 'At First',
+      reviewContentSubtitle:
+          "Let's figure out how much I spendt on this trip of money and time, "
+          'and then the story begins',
+      hotels: [
+        Hotel(
+          title: 'Crown 2',
+          price: 12.99,
+          image: 'assets/travel_app/crown_5.png',
+        ),
+        Hotel(
+          title: 'Hotel Tusl',
+          price: 12.99,
+          image: 'assets/travel_app/west_asia.png',
+        ),
+        Hotel(
+          title: 'Motel',
+          price: 12.99,
+          image: 'assets/travel_app/motel.png',
+        ),
+      ],
+    ),
+  ),
+  const Country(
     name: 'West',
     image: 'assets/travel_app/west_asia.png',
     reviewer: 'Leslie Alexander',
@@ -247,6 +283,42 @@ List<Country> countriesData = [
       ],
     ),
   ),
+  const Country(
+    name: 'West2',
+    image: 'assets/travel_app/west_asia.png',
+    reviewer: 'Leslie Alexander',
+    reviewerPhoto: 'assets/travel_app/avatar.jpg',
+    reviewDetail: ReviewDetail(
+      title: 'Travel to West Asia',
+      description:
+          'My trip to West Asia started in Beijing, where I stayed in a '
+          'beautiful hotel called...',
+      likes: 100,
+      location: 'West Asia',
+      views: 111,
+      reviewSubtitle: 'At First',
+      reviewContentSubtitle:
+          "Let's figure out how much I spendt on this trip of money and time, "
+          'and then the story begins',
+      hotels: [
+        Hotel(
+          title: 'Crown 2',
+          price: 12.99,
+          image: 'assets/travel_app/crown_5.png',
+        ),
+        Hotel(
+          title: 'Hotel Green',
+          price: 12.99,
+          image: 'assets/travel_app/west_asia.png',
+        ),
+        Hotel(
+          title: 'Motel',
+          price: 12.99,
+          image: 'assets/travel_app/motel.png',
+        ),
+      ],
+    ),
+  )
 ];
 
 const categories = [
