@@ -33,8 +33,8 @@ class _NewsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: const [
+    return const Column(
+      children: [
         _PostCard(
           userName: 'Daniela Fernández Ramos',
           userImage: 'assets/facebook_redesign/stories_3.png',
@@ -92,7 +92,7 @@ class _PostCard extends StatelessWidget {
           Text(
             postDescription,
             style: TextStyle(
-              color: theme.textTheme.bodyText1?.color,
+              color: theme.textTheme.bodyLarge?.color,
               fontSize: 13,
             ),
           ),
@@ -124,7 +124,7 @@ class _PostCard extends StatelessWidget {
                     Text(
                       'Michael Bruno',
                       style: TextStyle(
-                        color: theme.textTheme.bodyText1?.color,
+                        color: theme.textTheme.bodyLarge?.color,
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
                       ),
@@ -132,13 +132,13 @@ class _PostCard extends StatelessWidget {
                     Text(
                       'Esta foto esta muy cool, deberías ser modelo',
                       style: TextStyle(
-                        color: theme.textTheme.bodyText2?.color,
+                        color: theme.textTheme.bodyMedium?.color,
                         fontSize: 11,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Row(
-                      children: const [
+                    const Row(
+                      children: [
                         _TextButtonCustom(label: 'Me gusta'),
                         _TextButtonCustom(label: 'Responder'),
                       ],
@@ -191,7 +191,7 @@ class _PostInteractionBar extends StatelessWidget {
         Text(
           '30 comentarios · 5 compartidos',
           style:
-              TextStyle(color: theme.textTheme.bodyText2?.color, fontSize: 12),
+              TextStyle(color: theme.textTheme.bodyMedium?.color, fontSize: 12),
         ),
         Row(
           children: [
@@ -200,7 +200,7 @@ class _PostInteractionBar extends StatelessWidget {
             Text(
               'Mao Lop y 50 personas más',
               style: TextStyle(
-                color: theme.textTheme.bodyText2?.color,
+                color: theme.textTheme.bodyMedium?.color,
                 fontSize: 11,
               ),
             ),
@@ -253,7 +253,7 @@ class _TopInformationAndActionButtons extends StatelessWidget {
               Text(
                 name,
                 style: TextStyle(
-                  color: theme.textTheme.bodyText1?.color,
+                  color: theme.textTheme.bodyLarge?.color,
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
                 ),
@@ -268,7 +268,7 @@ class _TopInformationAndActionButtons extends StatelessWidget {
                   Text(
                     'Hace 3 días',
                     style: TextStyle(
-                      color: theme.textTheme.bodyText2?.color,
+                      color: theme.textTheme.bodyMedium?.color,
                       fontSize: 10,
                     ),
                   ),
@@ -299,8 +299,8 @@ class _SocialButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: const [
+    return const Row(
+      children: [
         _PostSocialButton(icon: 'assets/facebook_redesign/like.svg'),
         SizedBox(width: 5),
         _PostSocialButton(icon: 'assets/facebook_redesign/comment.svg'),
@@ -427,8 +427,8 @@ class _PersonalStory extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             children: [
               Container(
-                height: size.height * .08,
-                width: size.height * .08,
+                height: 50,
+                width: 50,
                 decoration: BoxDecoration(
                   image: const DecorationImage(
                     image: AssetImage('assets/facebook_redesign/stories_1.png'),
@@ -452,7 +452,7 @@ class _PersonalStory extends StatelessWidget {
             child: Text(
               'Crear historia',
               style: TextStyle(
-                color: Theme.of(context).textTheme.bodyText2?.color,
+                color: Theme.of(context).textTheme.bodyMedium?.color,
                 fontSize: 12,
               ),
             ),
@@ -486,8 +486,8 @@ class _FriendStory extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             children: [
               Container(
-                height: size.height * .08,
-                width: size.height * .08,
+                height: 50,
+                width: 50,
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage(storyImage),
@@ -519,7 +519,7 @@ class _FriendStory extends StatelessWidget {
             child: Text(
               name,
               style: TextStyle(
-                color: Theme.of(context).textTheme.bodyText2?.color,
+                color: Theme.of(context).textTheme.bodyMedium?.color,
                 fontSize: 12,
               ),
             ),
