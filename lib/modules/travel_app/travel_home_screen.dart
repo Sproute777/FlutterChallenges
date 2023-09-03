@@ -140,10 +140,12 @@ class _CountryTopSelection extends StatefulWidget {
 }
 
 class __CountryTopSelectionState extends State<_CountryTopSelection> {
-  final _itemScrollController = ItemScrollController();
+  late final ItemScrollController _itemScrollController;
+
   @override
   void initState() {
     super.initState();
+    _itemScrollController = ItemScrollController();
   }
 
   @override
