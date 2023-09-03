@@ -101,6 +101,7 @@ class _TravelHomeBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Stack(
       children: [
         const _BackgroundRoundedContainer(),
@@ -126,7 +127,7 @@ class _TravelHomeBody extends StatelessWidget {
               const _CountryTopSelection(),
               const _SearchFilter(),
               const _CountryTravelCarousel(),
-              SizedBox(height: MediaQuery.of(context).size.height * .11)
+              SizedBox(height: size.height * .11)
             ],
           ),
         )
@@ -197,7 +198,6 @@ class _CountryTravelCarousel extends StatefulWidget {
 class _CountryTravelCarouselState extends State<_CountryTravelCarousel> {
   late final PageController _pageController;
   late final FocusNode _focusNode;
-  int selected = 0;
 
   @override
   void initState() {
@@ -214,9 +214,6 @@ class _CountryTravelCarouselState extends State<_CountryTravelCarousel> {
 
   void _onPageChanged(int index) {
     if (_focusNode.hasFocus) {
-      setState(() {
-        selected = index;
-      });
       context.read<TravelAppCubit>().changeCountry(index);
     }
   }
@@ -258,19 +255,10 @@ class _CountryTravelCarouselState extends State<_CountryTravelCarousel> {
                   final country = state.countries[index];
                   return GestureDetector(
                     onTap: () {
-                      if (_pageController.page == index.toDouble()) {
-                        Navigator.of(context).pushNamed(
-                          Routes.travelCountryDetails,
-                          arguments: country,
-                        );
-                      } else {
-                        context.read<TravelAppCubit>().changeCountry(index);
-                        _pageController.animateToPage(
-                          index,
-                          duration: const Duration(milliseconds: 500),
-                          curve: Curves.easeIn,
-                        );
-                      }
+                      Navigator.of(context).pushNamed(
+                        Routes.travelCountryDetails,
+                        arguments: country,
+                      );
                     },
                     child: TweenAnimationBuilder<double>(
                       tween: Tween(
@@ -333,10 +321,7 @@ class _CountryTravelCarouselState extends State<_CountryTravelCarousel> {
                                         Row(
                                           children: [
                                             CircleAvatar(
-                                              radius: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  .015,
+                                              radius: size.height * .015,
                                               backgroundImage: AssetImage(
                                                 country.reviewerPhoto,
                                               ),
@@ -459,6 +444,7 @@ class _CountryOptionTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: onChange,
       child: Align(
@@ -473,10 +459,8 @@ class _CountryOptionTab extends StatelessWidget {
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 500),
             curve: Curves.easeIn,
-            width: MediaQuery.of(context).size.height * .13,
-            height: isSelected
-                ? MediaQuery.of(context).size.height * .15
-                : MediaQuery.of(context).size.height * .13,
+            width: size.height * .13,
+            height: isSelected ? size.height * .15 : size.height * .13,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
               image: DecorationImage(
@@ -591,11 +575,12 @@ class _BackgroundRoundedContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Align(
       alignment: Alignment.bottomCenter,
       child: Container(
-        height: MediaQuery.of(context).size.height * .2,
-        width: double.infinity,
+        height: size.height * .2,
+        width: double.maxFinite,
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(39),
