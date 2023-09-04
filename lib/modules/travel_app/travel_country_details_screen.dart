@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutterchallenges/gen/assets.gen.dart';
 import 'package:flutterchallenges/modules/travel_app/country.dart';
 
 class TravelCountryDetails extends StatelessWidget {
@@ -73,7 +74,7 @@ class _BodyTravelCountryDetails extends StatelessWidget {
               ],
             ),
           ),
-        )
+        ),
       ],
     );
   }
@@ -204,7 +205,7 @@ class _ReviewContent extends StatelessWidget {
                 ],
               ),
             ],
-          )
+          ),
         ],
       ),
     );
@@ -318,7 +319,7 @@ class _CategoryOption extends StatelessWidget {
             color: const Color(0xff4A4D45).withOpacity(.2),
             blurRadius: 7,
             spreadRadius: 2,
-          )
+          ),
         ],
       ),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -401,7 +402,7 @@ class CustomSliverAppBar extends SliverPersistentHeaderDelegate {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      SvgPicture.asset('assets/travel_app/arrow_left.svg'),
+                      Assets.travelApp.arrowLeft.svg(),
                       const SizedBox(width: 10),
                       const Text(
                         'Back',
@@ -488,14 +489,13 @@ class CustomSliverAppBar extends SliverPersistentHeaderDelegate {
                           height: size.width * .1,
                           margin: const EdgeInsets.all(10),
                           padding: const EdgeInsets.all(10),
-                          child: SvgPicture.asset(
-                            'assets/travel_app/heart.svg',
-                            fit: BoxFit.fitWidth,
+                          child: Assets.travelApp.heart.svg(
                             width: size.width * .1,
+                            fit: BoxFit.fitWidth,
                           ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),

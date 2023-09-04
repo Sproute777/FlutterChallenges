@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutterchallenges/gen/assets.gen.dart';
 import 'package:flutterchallenges/modules/facebook_redesign/blocs/theme_bloc.dart';
 import 'package:flutterchallenges/modules/facebook_redesign/widgets/top_bar_app.dart';
 import 'package:flutterchallenges/theme/app_theme.dart';
@@ -11,8 +12,8 @@ class OptionsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: const [
+    return const Column(
+      children: [
         TopBarApp(),
         SizedBox(height: 20),
         _MenuSection(),
@@ -65,29 +66,29 @@ class _MenuSection extends StatelessWidget {
                           crossAxisSpacing: 20,
                           mainAxisSpacing: 20,
                           primary: false,
-                          children: const [
+                          children: [
                             _SettingGridOption(
-                              icon: 'assets/facebook_redesign/youtube.svg',
+                              icon: Assets.facebookRedesign.youtube.path,
                               label: 'Videos en Watch',
                             ),
-                            _SettingGridOption(
+                            const _SettingGridOption(
                               icon:
                                   'assets/facebook_redesign/shopping_cart.svg',
                               label: 'Marketplace',
                             ),
-                            _SettingGridOption(
+                            const _SettingGridOption(
                               icon: 'assets/facebook_redesign/heart.svg',
                               label: 'Parejas',
                             ),
-                            _SettingGridOption(
+                            const _SettingGridOption(
                               icon: 'assets/facebook_redesign/games.svg',
                               label: 'Videojuegos',
                             ),
-                            _SettingGridOption(
+                            const _SettingGridOption(
                               icon: 'assets/facebook_redesign/shopping-bag.svg',
                               label: 'Empleos',
                             ),
-                            _SettingGridOption(
+                            const _SettingGridOption(
                               icon: 'assets/facebook_redesign/bookmark.svg',
                               label: 'Guardados',
                             ),
@@ -137,13 +138,13 @@ class _SettingGridOption extends StatelessWidget {
               child: Text(
                 label,
                 style: TextStyle(
-                  color: theme.textTheme.bodyText1?.color,
+                  color: theme.textTheme.bodyLarge?.color,
                   fontSize: 13,
                   height: 1.3,
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
@@ -261,7 +262,7 @@ class _MenuRow extends StatelessWidget {
           Text(
             'Menú',
             style: TextStyle(
-              color: theme.textTheme.bodyText1?.color,
+              color: theme.textTheme.bodyLarge?.color,
               fontSize: 25,
               fontWeight: FontWeight.bold,
             ),
@@ -275,7 +276,7 @@ class _MenuRow extends StatelessWidget {
           Text(
             'Modo oscuro',
             style: TextStyle(
-              color: theme.textTheme.bodyText1?.color,
+              color: theme.textTheme.bodyLarge?.color,
               fontSize: 13,
             ),
           ),
@@ -346,11 +347,11 @@ class _SettingButton extends StatelessWidget {
           Text(
             label,
             style: TextStyle(
-              color: theme.textTheme.bodyText1?.color,
+              color: theme.textTheme.bodyLarge?.color,
               fontSize: 12,
               height: 1.3,
             ),
-          )
+          ),
         ],
       ),
     );

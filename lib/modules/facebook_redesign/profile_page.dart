@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutterchallenges/gen/assets.gen.dart';
 import 'package:flutterchallenges/modules/facebook_redesign/blocs/theme_bloc.dart';
 import 'package:flutterchallenges/modules/facebook_redesign/widgets/avatar_profile.dart';
 import 'package:flutterchallenges/theme/app_theme.dart';
@@ -26,7 +27,7 @@ class ProfilePage extends StatelessWidget {
       ),
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: theme.backgroundColor,
+          backgroundColor: theme.colorScheme.background,
           body: const _ProfileBody(),
         ),
       ),
@@ -48,8 +49,7 @@ class _ProfileBody extends StatelessWidget {
             SizedBox(
               height: size.height * .3,
               width: double.infinity,
-              child: Image.asset(
-                'assets/facebook_redesign/banner.png',
+              child: Assets.facebookRedesign.banner.image(
                 fit: BoxFit.fitHeight,
               ),
             ),
@@ -67,9 +67,7 @@ class _ProfileBody extends StatelessWidget {
                   ),
                   padding: const EdgeInsets.only(right: 2),
                   alignment: Alignment.center,
-                  child: SvgPicture.asset(
-                    'assets/facebook_redesign/ios_arrow_back.svg',
-                    color: Colors.white,
+                  child: Assets.facebookRedesign.iosArrowBack.svg(
                     width: size.width * .02,
                   ),
                 ),
@@ -122,15 +120,15 @@ class _ProfileBody extends StatelessWidget {
                         Text(
                           'Mao Lop',
                           style: TextStyle(
-                            color: theme.textTheme.bodyText1?.color,
+                            color: theme.textTheme.bodyLarge?.color,
                             fontWeight: FontWeight.bold,
                             fontSize: 30,
                           ),
                         ),
                         const SizedBox(height: 10),
-                        Row(
+                        const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children: [
                             _TextInformation(text: 'Mauricio Lopez'),
                             _VerticalDivider(),
                             _TextInformation(text: 'Diseñador UI/UX'),
@@ -213,7 +211,7 @@ class _ProfileBody extends StatelessWidget {
                                 'assets/facebook_redesign/more_options.svg',
                                 fit: BoxFit.cover,
                               ),
-                            )
+                            ),
                           ],
                         ),
                         Padding(
@@ -224,10 +222,10 @@ class _ProfileBody extends StatelessWidget {
                             height: 30,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
                           child: Column(
-                            children: const [
+                            children: [
                               _BasicInformationText(
                                 icon: 'assets/facebook_redesign/home.svg',
                                 text: 'Vive en Zihuatanejo, Guerrero, México.',
@@ -296,7 +294,7 @@ class _FriendsSection extends StatelessWidget {
               Text(
                 'Amigos',
                 style: TextStyle(
-                  color: theme.textTheme.bodyText1?.color,
+                  color: theme.textTheme.bodyLarge?.color,
                   fontWeight: FontWeight.bold,
                   fontSize: 19,
                 ),
@@ -305,7 +303,7 @@ class _FriendsSection extends StatelessWidget {
               Text(
                 '(2,004 amigos)',
                 style: TextStyle(
-                  color: theme.textTheme.bodyText2?.color,
+                  color: theme.textTheme.bodyMedium?.color,
                   fontSize: 19,
                 ),
               ),
@@ -322,9 +320,9 @@ class _FriendsSection extends StatelessWidget {
               ),
             ],
           ),
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
+            children: [
               _FriendAvatar(
                 profileImage: 'assets/facebook_redesign/stories_2.png',
                 name: 'Wilber Garcia',
@@ -342,7 +340,7 @@ class _FriendsSection extends StatelessWidget {
                 name: 'Sarai Perez',
               ),
             ],
-          )
+          ),
         ],
       ),
     );
@@ -427,11 +425,11 @@ class _CollectionCard extends StatelessWidget {
             child: Text(
               name,
               style: TextStyle(
-                color: Theme.of(context).textTheme.bodyText2?.color,
+                color: Theme.of(context).textTheme.bodyMedium?.color,
                 fontSize: 12,
               ),
             ),
-          )
+          ),
         ],
       ),
     );
@@ -477,11 +475,11 @@ class _FriendAvatar extends StatelessWidget {
             child: Text(
               name,
               style: TextStyle(
-                color: Theme.of(context).textTheme.bodyText1?.color,
+                color: Theme.of(context).textTheme.bodyLarge?.color,
                 fontSize: 13,
               ),
             ),
-          )
+          ),
         ],
       ),
     );
@@ -514,7 +512,7 @@ class _BasicInformationText extends StatelessWidget {
           Text(
             text,
             style: TextStyle(
-              color: theme.textTheme.bodyText1?.color,
+              color: theme.textTheme.bodyLarge?.color,
               fontSize: 14,
               height: 1.3,
             ),
@@ -537,7 +535,7 @@ class _TextInformation extends StatelessWidget {
     final theme = Theme.of(context);
     return Text(
       text,
-      style: TextStyle(color: theme.textTheme.bodyText2?.color, fontSize: 15),
+      style: TextStyle(color: theme.textTheme.bodyMedium?.color, fontSize: 15),
     );
   }
 }
