@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutterchallenges/gen/assets.gen.dart';
 import 'package:flutterchallenges/navigation/routes.dart';
 
@@ -66,13 +65,13 @@ class _IntroductionSlider extends StatefulWidget {
 }
 
 class _IntroductionSliderState extends State<_IntroductionSlider> {
-  final PageController _pageController = PageController();
-  bool isFinal = false;
-  bool canPrevious = true;
-  bool canNext = true;
+  late final PageController _pageController;
+  bool _canPrevious = true;
+  bool _canNext = true;
   @override
   void initState() {
     super.initState();
+    _pageController = PageController();
   }
 
   Future<void> updatePosition(int position) async {
@@ -99,14 +98,14 @@ class _IntroductionSliderState extends State<_IntroductionSlider> {
 
   void _onPageChanged(int index) {
     if (index == 0) {
-      canNext = true;
-      canPrevious = false;
+      _canNext = true;
+      _canPrevious = false;
     } else if (index == 2) {
-      canNext = false;
-      canPrevious = true;
+      _canNext = false;
+      _canPrevious = true;
     } else {
-      canNext = true;
-      canPrevious = true;
+      _canNext = true;
+      _canPrevious = true;
     }
     setState(() {});
   }
@@ -140,14 +139,12 @@ class _IntroductionSliderState extends State<_IntroductionSlider> {
                       children: [
                         Expanded(
                           child: Visibility(
-                            visible: canPrevious,
+                            visible: _canPrevious,
                             child: GestureDetector(
                               onTap: _previousPage,
                               child: Align(
                                 alignment: Alignment.centerLeft,
-                                child: SvgPicture.asset(
-                                  'assets/space_concept/left_arrow.svg',
-                                ),
+                                child: Assets.spaceConcept.leftArrow.svg(),
                               ),
                             ),
                           ),
@@ -157,14 +154,12 @@ class _IntroductionSliderState extends State<_IntroductionSlider> {
                         ),
                         Expanded(
                           child: Visibility(
-                            visible: canNext,
+                            visible: _canNext,
                             child: GestureDetector(
                               onTap: _nextPage,
-                              child: Container(
+                              child: Align(
                                 alignment: Alignment.centerLeft,
-                                child: SvgPicture.asset(
-                                  'assets/space_concept/right_arrow.svg',
-                                ),
+                                child: Assets.spaceConcept.rightArrow.svg(),
                               ),
                             ),
                           ),
@@ -205,12 +200,12 @@ class _IntroductionSliderState extends State<_IntroductionSlider> {
                     ),
                     minimumSize: const Size(105, 34),
                   ),
-                  onPressed: () => isFinal
+                  onPressed: () => !_canNext
                       ? Navigator.of(context)
                           .pushNamed(Routes.spaceConceptIntro)
                       : updatePosition(_pageController.page!.toInt() + 1),
                   child: Text(
-                    isFinal ? 'Done' : 'Next',
+                    !_canNext ? 'Done' : 'Next',
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 15,
