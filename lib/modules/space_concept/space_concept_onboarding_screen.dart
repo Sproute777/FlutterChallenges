@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutterchallenges/gen/assets.gen.dart';
 import 'package:flutterchallenges/navigation/routes.dart';
 
 class SpaceConceptOnboardingScreen extends StatefulWidget {
@@ -47,8 +48,8 @@ class _BodyOnboarding extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: const [
+    return const Column(
+      children: [
         _SpaceElementTitle(),
         _AstronauteIcon(),
         _IntroductionSlider(),
@@ -61,36 +62,53 @@ class _IntroductionSlider extends StatefulWidget {
   const _IntroductionSlider();
 
   @override
-  __IntroductionSliderState createState() => __IntroductionSliderState();
+  _IntroductionSliderState createState() => _IntroductionSliderState();
 }
 
-class __IntroductionSliderState extends State<_IntroductionSlider> {
+class _IntroductionSliderState extends State<_IntroductionSlider> {
   final PageController _pageController = PageController();
-  List<Widget> stepWidget = [];
   bool isFinal = false;
-
+  bool canPrevious = true;
+  bool canNext = true;
   @override
   void initState() {
     super.initState();
-    stepWidget.addAll([
-      _FirstStep(updatePosition: updatePosition),
-      _SecondStep(updatePosition: updatePosition),
-      _ThirdStep(updatePosition: updatePosition),
-    ]);
-    _pageController.addListener(() {
-      isFinal = _pageController.page!.toInt() == stepWidget.length - 1;
-      setState(() {});
-    });
   }
 
   Future<void> updatePosition(int position) async {
-    if (position < stepWidget.length) {
-      await _pageController.animateToPage(
-        position,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.decelerate,
-      );
+    await _pageController.animateToPage(
+      position,
+      duration: kThemeAnimationDuration,
+      curve: Curves.ease,
+    );
+  }
+
+  Future<void> _previousPage() async {
+    await _pageController.previousPage(
+      duration: kThemeAnimationDuration,
+      curve: Curves.ease,
+    );
+  }
+
+  Future<void> _nextPage() async {
+    await _pageController.nextPage(
+      duration: kThemeAnimationDuration,
+      curve: Curves.ease,
+    );
+  }
+
+  void _onPageChanged(int index) {
+    if (index == 0) {
+      canNext = true;
+      canPrevious = false;
+    } else if (index == 2) {
+      canNext = false;
+      canPrevious = true;
+    } else {
+      canNext = true;
+      canPrevious = true;
     }
+    setState(() {});
   }
 
   @override
@@ -99,10 +117,63 @@ class __IntroductionSliderState extends State<_IntroductionSlider> {
       child: Column(
         children: [
           Expanded(
-            child: PageView.builder(
-              controller: _pageController,
-              itemCount: stepWidget.length,
-              itemBuilder: (context, index) => stepWidget[index],
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: MediaQuery.of(context).size.width * .1,
+              ),
+              child: Stack(
+                children: [
+                  Positioned(
+                    child: PageView(
+                      onPageChanged: _onPageChanged,
+                      physics: const NeverScrollableScrollPhysics(),
+                      controller: _pageController,
+                      children: const <Widget>[
+                        _FirstStep(),
+                        _SecondStep(),
+                        _ThirdStep(),
+                      ],
+                    ),
+                  ),
+                  Positioned(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Visibility(
+                            visible: canPrevious,
+                            child: GestureDetector(
+                              onTap: _previousPage,
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: SvgPicture.asset(
+                                  'assets/space_concept/left_arrow.svg',
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const Spacer(
+                          flex: 4,
+                        ),
+                        Expanded(
+                          child: Visibility(
+                            visible: canNext,
+                            child: GestureDetector(
+                              onTap: _nextPage,
+                              child: Container(
+                                alignment: Alignment.centerLeft,
+                                child: SvgPicture.asset(
+                                  'assets/space_concept/right_arrow.svg',
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           Padding(
@@ -158,11 +229,7 @@ class __IntroductionSliderState extends State<_IntroductionSlider> {
 }
 
 class _FirstStep extends StatelessWidget {
-  const _FirstStep({
-    required this.updatePosition,
-  });
-
-  final ValueSetter<int> updatePosition;
+  const _FirstStep();
 
   @override
   Widget build(BuildContext context) {
@@ -170,14 +237,15 @@ class _FirstStep extends StatelessWidget {
       padding: EdgeInsets.symmetric(
         horizontal: MediaQuery.of(context).size.width * .1,
       ),
-      child: Row(
+      child: const Row(
         children: [
+          Spacer(),
           Expanded(
-            flex: 3,
+            flex: 4,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
-              children: const [
+              children: [
                 Text(
                   'Explore',
                   style: TextStyle(
@@ -199,16 +267,7 @@ class _FirstStep extends StatelessWidget {
               ],
             ),
           ),
-          Expanded(
-            child: GestureDetector(
-              behavior: HitTestBehavior.translucent,
-              onTap: () => updatePosition(1),
-              child: Container(
-                alignment: Alignment.centerRight,
-                child: SvgPicture.asset('assets/space_concept/right_arrow.svg'),
-              ),
-            ),
-          )
+          Spacer(),
         ],
       ),
     );
@@ -216,81 +275,48 @@ class _FirstStep extends StatelessWidget {
 }
 
 class _SecondStep extends StatelessWidget {
-  const _SecondStep({
-    required this.updatePosition,
-  });
-
-  final ValueSetter<int> updatePosition;
+  const _SecondStep();
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.width * .1,
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: GestureDetector(
-              behavior: HitTestBehavior.translucent,
-              onTap: () => updatePosition(0),
-              child: Container(
-                alignment: Alignment.centerLeft,
-                child: SvgPicture.asset(
-                  'assets/space_concept/left_arrow.svg',
+    return const Row(
+      children: <Widget>[
+        Spacer(),
+        Expanded(
+          flex: 4,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Explore',
+                style: TextStyle(
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Mark',
                 ),
               ),
-            ),
-          ),
-          Expanded(
-            flex: 4,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: const [
-                Text(
-                  'Explore',
-                  style: TextStyle(
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Mark',
-                  ),
-                ),
-                Text(
-                  'Universe',
-                  style: TextStyle(fontSize: 40, fontFamily: 'Mark'),
-                ),
-                Text(
-                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
-                  'Habitant sem ut sit fames in adipiscing. Ac magna donec '
-                  'egestas habitant.',
-                  style: TextStyle(fontSize: 12, fontFamily: 'Mark'),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: GestureDetector(
-              behavior: HitTestBehavior.translucent,
-              onTap: () => updatePosition(2),
-              child: Container(
-                alignment: Alignment.centerRight,
-                child: SvgPicture.asset('assets/space_concept/right_arrow.svg'),
+              Text(
+                'Universe',
+                style: TextStyle(fontSize: 40, fontFamily: 'Mark'),
               ),
-            ),
-          )
-        ],
-      ),
+              Text(
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
+                'Habitant sem ut sit fames in adipiscing. Ac magna donec '
+                'egestas habitant.',
+                style: TextStyle(fontSize: 12, fontFamily: 'Mark'),
+              ),
+            ],
+          ),
+        ),
+        Spacer(),
+      ],
     );
   }
 }
 
 class _ThirdStep extends StatelessWidget {
-  const _ThirdStep({
-    required this.updatePosition,
-  });
-
-  final ValueSetter<int> updatePosition;
+  const _ThirdStep();
 
   @override
   Widget build(BuildContext context) {
@@ -298,26 +324,15 @@ class _ThirdStep extends StatelessWidget {
       padding: EdgeInsets.symmetric(
         horizontal: MediaQuery.of(context).size.width * .1,
       ),
-      child: Row(
+      child: const Row(
         children: [
-          Expanded(
-            child: GestureDetector(
-              behavior: HitTestBehavior.translucent,
-              onTap: () => updatePosition(1),
-              child: Container(
-                alignment: Alignment.centerLeft,
-                child: SvgPicture.asset(
-                  'assets/space_concept/left_arrow.svg',
-                ),
-              ),
-            ),
-          ),
+          Spacer(),
           Expanded(
             flex: 4,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
-              children: const [
+              children: [
                 Text(
                   'Explore',
                   style: TextStyle(
@@ -339,6 +354,7 @@ class _ThirdStep extends StatelessWidget {
               ],
             ),
           ),
+          Spacer(),
         ],
       ),
     );
@@ -350,8 +366,7 @@ class _AstronauteIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SvgPicture.asset(
-      'assets/space_concept/onboarding.svg',
+    return Assets.spaceConcept.onboarding.svg(
       fit: BoxFit.fitWidth,
       height: MediaQuery.of(context).size.height * .33,
       width: double.infinity,
@@ -369,9 +384,9 @@ class _SpaceElementTitle extends StatelessWidget {
         top: MediaQuery.of(context).size.height * .08,
         bottom: 20,
       ),
-      child: Row(
+      child: const Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
+        children: [
           Text(
             'Space',
             style: TextStyle(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutterchallenges/gen/assets.gen.dart';
 import 'package:flutterchallenges/modules/space_concept/widgets/bottom_bar.dart';
 import 'package:flutterchallenges/modules/space_concept/widgets/pick_to_option.dart';
 import 'package:flutterchallenges/modules/space_concept/widgets/top_bar.dart';
@@ -43,17 +44,17 @@ class _PrincipalBody extends StatelessWidget {
           fit: BoxFit.fill,
         ),
       ),
-      child: SafeArea(
+      child: const SafeArea(
         child: Column(
           children: [
-            const TopBar(),
-            const SizedBox(height: 10),
-            const _SearchBar(),
+            TopBar(),
+            SizedBox(height: 10),
+            _SearchBar(),
             Expanded(
               child: Stack(
                 clipBehavior: Clip.none,
                 fit: StackFit.expand,
-                children: const [
+                children: [
                   _PlanetMediaItem(),
                   _PlanetInformation(),
                 ],
@@ -71,13 +72,14 @@ class _PlanetMediaItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Align(
       alignment: Alignment.topCenter,
       child: Stack(
         alignment: Alignment.center,
         children: [
           Container(
-            height: MediaQuery.of(context).size.height * .4,
+            height: size.height * .4,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(color: Colors.white, width: .3),
@@ -95,15 +97,15 @@ class _PlanetMediaItem extends StatelessWidget {
             number: 1,
             action: () {},
             marginPosition: EdgeInsets.only(
-              right: MediaQuery.of(context).size.height * .31,
+              right: size.height * .31,
             ),
           ),
           PickToExplore(
             number: 2,
             action: () {},
             marginPosition: EdgeInsets.only(
-              left: MediaQuery.of(context).size.height * .2,
-              top: MediaQuery.of(context).size.height * .24,
+              left: size.height * .2,
+              top: size.height * .24,
             ),
           ),
           PickToExplore(
@@ -111,8 +113,8 @@ class _PlanetMediaItem extends StatelessWidget {
             action: () => Navigator.of(context)
                 .pushNamed(Routes.spaceConceptExplorePlanet),
             marginPosition: EdgeInsets.only(
-              left: MediaQuery.of(context).size.height * .23,
-              bottom: MediaQuery.of(context).size.height * .24,
+              left: size.height * .23,
+              bottom: size.height * .24,
             ),
           ),
         ],
@@ -180,7 +182,7 @@ class _PlanetInformation extends StatelessWidget {
                   'assets/space_concept/right_arrow.svg',
                   height: 10,
                   color: Colors.white,
-                )
+                ),
               ],
             ),
             const SizedBox(height: 20),
@@ -196,8 +198,9 @@ class _SearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Container(
-      width: MediaQuery.of(context).size.width * .6,
+      width: size.width * .6,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(17.5),
         color: Colors.white.withOpacity(.2),
@@ -205,7 +208,7 @@ class _SearchBar extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 21, vertical: 5),
       child: Row(
         children: [
-          SvgPicture.asset('assets/space_concept/search.svg'),
+          Assets.spaceConcept.search.svg(),
           const SizedBox(width: 20),
           const Text(
             'Search your favorite planet',
