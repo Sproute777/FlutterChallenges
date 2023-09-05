@@ -32,8 +32,8 @@ class _HomeBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: const [
+    return const Stack(
+      children: [
         _BackgroundPlanet(),
         _SpaceExplorationDescription(),
       ],
@@ -50,9 +50,9 @@ class _SpaceExplorationDescription extends StatelessWidget {
       padding: EdgeInsets.symmetric(
         horizontal: MediaQuery.of(context).size.width * .1,
       ),
-      child: Column(
+      child: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
+        children: [
           SizedBox(height: 20),
           _CloseButton(),
           SizedBox(height: 20),
@@ -116,11 +116,11 @@ class _BackgroundPlanet extends StatelessWidget {
               fit: BoxFit.fitWidth,
             ),
           ),
-          Positioned(
+          const Positioned(
             bottom: 30,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
+              children: [
                 Text(
                   'Space',
                   style: TextStyle(

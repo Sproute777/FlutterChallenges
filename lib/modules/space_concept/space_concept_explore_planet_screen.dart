@@ -64,10 +64,10 @@ class _ExploreBody extends StatelessWidget {
                 children: [
                   OverflowBox(
                     maxHeight: MediaQuery.of(context).size.height * 1,
-                    child: Stack(
+                    child: const Stack(
                       clipBehavior: Clip.none,
                       alignment: Alignment.bottomCenter,
-                      children: const [
+                      children: [
                         _Atmosphere(),
                         _PlanetMediaItem(),
                       ],
