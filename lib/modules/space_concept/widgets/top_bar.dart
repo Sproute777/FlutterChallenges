@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutterchallenges/gen/assets.gen.dart';
 
 class TopBar extends StatelessWidget {
   const TopBar({
@@ -14,14 +14,14 @@ class TopBar extends StatelessWidget {
           alignment: Alignment.centerLeft,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-            child: SvgPicture.asset('assets/space_concept/menu.svg'),
+            child: Assets.spaceConcept.menu.svg(),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 18),
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 18),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
+            children: [
               Text(
                 'Space',
                 style: TextStyle(

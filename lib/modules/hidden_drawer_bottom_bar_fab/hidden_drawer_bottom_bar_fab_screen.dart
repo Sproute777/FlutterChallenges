@@ -297,20 +297,20 @@ class _MenuDrawer extends StatelessWidget {
                 const SizedBox(height: 20),
                 GestureDetector(
                   onTap: () {},
-                  child: Padding(
-                    padding: const EdgeInsets.all(8),
+                  child: const Padding(
+                    padding: EdgeInsets.all(8),
                     child: Row(
                       children: <Widget>[
-                        const CircleAvatar(
+                        CircleAvatar(
                           radius: 20,
                           child: Icon(Icons.account_circle),
                         ),
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.only(left: 8),
+                            padding: EdgeInsets.only(left: 8),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: const <Widget>[
+                              children: <Widget>[
                                 Text(
                                   'GuillermoDLCO',
                                   overflow: TextOverflow.ellipsis,
@@ -604,8 +604,8 @@ class _BodyPage extends StatelessWidget {
         overscroll.disallowIndicator();
         return false;
       },
-      child: Column(
-        children: const <Widget>[
+      child: const Column(
+        children: <Widget>[
           _SeachBar(),
         ],
       ),

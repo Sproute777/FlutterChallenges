@@ -7,6 +7,8 @@ import 'package:flutterchallenges/navigation/routes.dart';
 import 'package:flutterchallenges/theme/app_theme.dart';
 import 'package:flutterchallenges/theme/pallete_color.dart';
 
+import '../navigation/routes/routes.dart';
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -51,7 +53,7 @@ class HomeScreen extends StatelessWidget {
                 ActionButton(
                   action: () {
                     context.read<ThemeBloc>().changeTheme(AppTheme.normal);
-                    Navigator.pushNamed(context, Routes.travelApp);
+                    const TravelRootRoute().replace(context);
                   },
                   label: 'Travel App',
                 ),

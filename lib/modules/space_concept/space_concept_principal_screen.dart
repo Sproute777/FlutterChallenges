@@ -54,7 +54,7 @@ class _PrincipalBody extends StatelessWidget {
               child: Stack(
                 clipBehavior: Clip.none,
                 fit: StackFit.expand,
-                children: [
+                children: <Widget>[
                   _PlanetMediaItem(),
                   _PlanetInformation(),
                 ],

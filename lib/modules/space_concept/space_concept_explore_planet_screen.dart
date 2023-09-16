@@ -5,6 +5,8 @@ import 'package:flutterchallenges/modules/space_concept/widgets/bottom_bar.dart'
 import 'package:flutterchallenges/modules/space_concept/widgets/pick_to_option.dart';
 import 'package:flutterchallenges/modules/space_concept/widgets/top_bar.dart';
 
+/// space concept widget
+/// show Earth with diffrent animations
 class SpaceConceptExplorePlanetScreen extends StatelessWidget {
   const SpaceConceptExplorePlanetScreen({super.key});
 
@@ -33,6 +35,7 @@ class _ExploreBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Container(
       alignment: Alignment.topCenter,
       decoration: const BoxDecoration(
@@ -50,10 +53,10 @@ class _ExploreBody extends StatelessWidget {
             const TopBar(),
             const SizedBox(height: 10),
             GestureDetector(
-              onTap: () => Navigator.of(context).pop(),
+              onTap: Navigator.of(context).pop,
               child: Padding(
                 padding: EdgeInsets.only(
-                  left: MediaQuery.of(context).size.width * .1,
+                  left: size.width * .1,
                   bottom: 30,
                 ),
                 child: SvgPicture.asset('assets/space_concept/arrow_back.svg'),
@@ -63,7 +66,7 @@ class _ExploreBody extends StatelessWidget {
               child: Stack(
                 children: [
                   OverflowBox(
-                    maxHeight: MediaQuery.of(context).size.height * 1,
+                    maxHeight: size.height * 1,
                     child: const Stack(
                       clipBehavior: Clip.none,
                       alignment: Alignment.bottomCenter,
@@ -89,9 +92,10 @@ class _ExploreInformation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.width * .1,
+        horizontal: size.width * .1,
         vertical: 10,
       ),
       child: Column(
@@ -134,16 +138,17 @@ class _Atmosphere extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return OverflowBox(
-      maxHeight: MediaQuery.of(context).size.height * 2,
-      maxWidth: MediaQuery.of(context).size.width * 2,
+      maxHeight: size.height * 2,
+      maxWidth: size.width * 2,
       child: Container(
-        margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * .7),
+        margin: EdgeInsets.only(top: size.height * .7),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           border: Border.all(color: Colors.white, width: .3),
         ),
-        width: MediaQuery.of(context).size.width * 2,
+        width: size.width * 2,
       ),
     );
   }
@@ -154,12 +159,13 @@ class _PlanetMediaItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Hero(
       tag: 'earth',
       child: Image.asset(
         'assets/space_concept/earth_planet_with_shadow_clip.png',
         fit: BoxFit.contain,
-        width: MediaQuery.of(context).size.width,
+        width: size.width,
       ),
     );
   }

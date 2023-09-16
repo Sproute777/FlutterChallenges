@@ -23,7 +23,7 @@ class Routes {
   static const facebookPrincipalScreen = '/facebookPrincipalScreen';
 
   static PageRouteBuilder<Widget> routes(RouteSettings routeSettings) {
-    print('Route name: ${routeSettings.name}');
+    debugPrint('Route name: ${routeSettings.name}');
     final args = routeSettings.arguments;
 
     switch (routeSettings.name) {

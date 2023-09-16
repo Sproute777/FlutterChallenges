@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutterchallenges/modules/travel_app/country.dart';
 import 'package:flutterchallenges/modules/travel_app/travel_app_cubit.dart';
-import 'package:flutterchallenges/navigation/routes.dart';
+import 'package:flutterchallenges/navigation/routes/routes.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class TravelHomeScreen extends StatelessWidget {
@@ -255,10 +255,7 @@ class _CountryTravelCarouselState extends State<_CountryTravelCarousel> {
                   final country = state.countries[index];
                   return GestureDetector(
                     onTap: () {
-                      Navigator.of(context).pushNamed(
-                        Routes.travelCountryDetails,
-                        arguments: country,
-                      );
+                      TravelCountryRoute($extra: country).go(context);
                     },
                     child: TweenAnimationBuilder<double>(
                       tween: Tween(

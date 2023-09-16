@@ -41,7 +41,7 @@ final appThemeData = {
       displayLarge: TextStyle(color: Colors.white),
       titleLarge: TextStyle(color: Color(0xffBABDC9)),
     ),
-    bottomAppBarTheme: BottomAppBarTheme(color: const Color(0xff080E1D)),
+    bottomAppBarTheme: const BottomAppBarTheme(color: Color(0xff080E1D)),
     colorScheme: ColorScheme.fromSwatch()
         .copyWith(
           primary: const Color(0xff2A303B),

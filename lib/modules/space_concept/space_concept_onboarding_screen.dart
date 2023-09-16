@@ -112,13 +112,14 @@ class _IntroductionSliderState extends State<_IntroductionSlider> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Expanded(
       child: Column(
         children: [
           Expanded(
             child: Padding(
               padding: EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width * .1,
+                horizontal: size.width * .1,
               ),
               child: Stack(
                 children: [
@@ -136,7 +137,7 @@ class _IntroductionSliderState extends State<_IntroductionSlider> {
                   ),
                   Positioned(
                     child: Row(
-                      children: [
+                      children: <Widget>[
                         Expanded(
                           child: Visibility(
                             visible: _canPrevious,
@@ -149,9 +150,7 @@ class _IntroductionSliderState extends State<_IntroductionSlider> {
                             ),
                           ),
                         ),
-                        const Spacer(
-                          flex: 4,
-                        ),
+                        const Spacer(flex: 4),
                         Expanded(
                           child: Visibility(
                             visible: _canNext,
@@ -173,8 +172,8 @@ class _IntroductionSliderState extends State<_IntroductionSlider> {
           ),
           Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * .1,
-              vertical: MediaQuery.of(context).size.height * .03,
+              horizontal: size.width * .1,
+              vertical: size.height * .03,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -228,9 +227,10 @@ class _FirstStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.width * .1,
+        horizontal: size.width * .1,
       ),
       child: const Row(
         children: [
@@ -315,9 +315,10 @@ class _ThirdStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.width * .1,
+        horizontal: size.width * .1,
       ),
       child: const Row(
         children: [
@@ -361,9 +362,10 @@ class _AstronauteIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Assets.spaceConcept.onboarding.svg(
       fit: BoxFit.fitWidth,
-      height: MediaQuery.of(context).size.height * .33,
+      height: size.height * .33,
       width: double.infinity,
     );
   }
@@ -374,9 +376,10 @@ class _SpaceElementTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Padding(
       padding: EdgeInsets.only(
-        top: MediaQuery.of(context).size.height * .08,
+        top: size.height * .08,
         bottom: 20,
       ),
       child: const Row(

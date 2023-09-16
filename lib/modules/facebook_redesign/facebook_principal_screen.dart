@@ -20,7 +20,7 @@ class FacebookPrincipalScreen extends StatelessWidget {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
         systemNavigationBarColor:
-            isLight ? Colors.white : theme.bottomAppBarColor,
+            isLight ? Colors.white : theme.bottomAppBarTheme.color,
         systemNavigationBarIconBrightness:
             isLight ? Brightness.dark : Brightness.light,
         statusBarColor: isLight ? Colors.white : theme.primaryColor,
@@ -31,7 +31,7 @@ class FacebookPrincipalScreen extends StatelessWidget {
         child: BlocProvider(
           create: (context) => BottomNavigationBloc(),
           child: Scaffold(
-            backgroundColor: theme.backgroundColor,
+            backgroundColor: theme.scaffoldBackgroundColor,
             body: BlocBuilder<BottomNavigationBloc, BottomNavigationState>(
               builder: (BuildContext context, BottomNavigationState state) {
                 return IndexedStack(
@@ -56,7 +56,7 @@ class FacebookPrincipalScreen extends StatelessWidget {
                   onTabSelected: (index) =>
                       bottomNavigationBloc.changePage(IndexPage.values[index]),
                   selectedIndex: bottomNavigationBloc.state.page.index,
-                  backgroundColor: theme.bottomAppBarColor,
+                  backgroundColor: theme.bottomAppBarTheme.color ?? Colors.blue,
                   color: const Color(0xffCFD7ED),
                   selectedColor: const Color(0xff1977F3),
                   height: 65,

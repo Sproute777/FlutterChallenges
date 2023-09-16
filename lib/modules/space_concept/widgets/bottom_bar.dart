@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class BottomBar extends StatelessWidget {
-  const BottomBar({
-    super.key,
-  });
+  const BottomBar({super.key});
 
   @override
   Widget build(BuildContext context) {
