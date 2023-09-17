@@ -5,14 +5,23 @@ import 'package:flutterchallenges/navigation/router.dart';
 import 'package:go_router/go_router.dart';
 
 void main() => runApp(
-      BlocProvider(
-        create: (context) => ThemeBloc(),
-        child: MyApp(),
-      ),
+      const MyApp(),
     );
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key}) : _router = GGrouter();
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => ThemeBloc(),
+      child: _MyAppView(),
+    );
+  }
+}
+
+class _MyAppView extends StatelessWidget {
+  _MyAppView() : _router = GGrouter();
   final GoRouter _router;
 
   @override
