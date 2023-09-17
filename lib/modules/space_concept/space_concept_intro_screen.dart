@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutterchallenges/navigation/routes.dart';
+
+import '../../gen/assets.gen.dart';
 
 class SpaceConceptIntroScreen extends StatelessWidget {
   const SpaceConceptIntroScreen({super.key});
@@ -109,13 +110,10 @@ class _BackgroundPlanet extends StatelessWidget {
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          Container(
-            alignment: const Alignment(0, 1.5),
-            child: Image.asset(
-              'assets/space_concept/space_exploration_planet.png',
-              fit: BoxFit.fitWidth,
-            ),
-          ),
+          Align(
+              alignment: const Alignment(0, 1.5),
+              child: Assets.spaceConcept.spaceExplorationPlanet
+                  .image(fit: BoxFit.fitWidth)),
           const Positioned(
             bottom: 30,
             child: Row(
@@ -156,12 +154,9 @@ class _CloseButton extends StatelessWidget {
       width: double.infinity,
       alignment: Alignment.centerRight,
       child: GestureDetector(
-        onTap: () =>
-            Navigator.of(context).pushNamed(Routes.spaceConceptPrincipal),
-        child: SvgPicture.asset(
-          'assets/space_concept/close.svg',
-        ),
-      ),
+          onTap: () =>
+              Navigator.of(context).pushNamed(Routes.spaceConceptPrincipal),
+          child: Assets.spaceConcept.close.svg()),
     );
   }
 }

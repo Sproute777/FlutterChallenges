@@ -7,6 +7,8 @@ import 'package:flutterchallenges/modules/travel_app/travel_app_cubit.dart';
 import 'package:flutterchallenges/navigation/routes/routes.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
+import '../../gen/assets.gen.dart';
+
 class TravelHomeScreen extends StatelessWidget {
   const TravelHomeScreen({super.key});
 
@@ -51,14 +53,14 @@ class _BottomBar extends StatelessWidget {
         borderRadius: BorderRadius.circular(300),
         color: const Color(0xfff37f10),
       ),
-      child: const Row(
+      child: Row(
         children: [
           _BottomBarItem(
-            icon: 'assets/travel_app/explore.svg',
+            icon: Assets.travelApp.explore.path,
             isSelected: true,
           ),
-          _BottomBarItem(icon: 'assets/travel_app/star.svg'),
-          _BottomBarItem(icon: 'assets/travel_app/profile.svg'),
+          _BottomBarItem(icon: Assets.travelApp.star.path),
+          _BottomBarItem(icon: Assets.travelApp.profile.path),
         ],
       ),
     );
@@ -154,7 +156,6 @@ class _CountryTopSelectionState extends State<_CountryTopSelection> {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.watch<TravelAppCubit>();
     final size = MediaQuery.of(context).size;
     return SizedBox(
       height: size.height * .15,
@@ -178,7 +179,7 @@ class _CountryTopSelectionState extends State<_CountryTopSelection> {
               isSelected: index == state.selected,
               onChange: () {
                 FocusScope.of(context).unfocus();
-                cubit.changeCountry(index);
+                context.read<TravelAppCubit>().changeCountry(index);
               },
             ),
           );
@@ -533,8 +534,8 @@ class _ProfileAvatar extends StatelessWidget {
         clipBehavior: Clip.none,
         children: [
           CircleAvatar(
-            radius: MediaQuery.of(context).size.height * .027,
-            backgroundImage: const AssetImage('assets/travel_app/avatar.jpg'),
+            radius: size.height * .027,
+            backgroundImage: AssetImage(Assets.travelApp.avatar.path),
           ),
           Positioned(
             right: -size.height * .005,

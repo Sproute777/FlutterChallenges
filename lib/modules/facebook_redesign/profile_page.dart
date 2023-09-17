@@ -207,8 +207,7 @@ class _ProfileBody extends StatelessWidget {
                               width: 40,
                               height: 40,
                               alignment: Alignment.center,
-                              child: SvgPicture.asset(
-                                'assets/facebook_redesign/more_options.svg',
+                              child: Assets.facebookRedesign.moreOptions.svg(
                                 fit: BoxFit.cover,
                               ),
                             ),

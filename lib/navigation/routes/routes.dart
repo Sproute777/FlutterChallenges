@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterchallenges/modules/home_screen.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../modules/hidden_drawer_bottom_bar_fab/hidden_drawer_bottom_bar_fab_screen.dart';
 import '../../modules/travel_app/country.dart';
 import '../../modules/travel_app/travel_country_details_screen.dart';
 import '../../modules/travel_app/travel_home_screen.dart';

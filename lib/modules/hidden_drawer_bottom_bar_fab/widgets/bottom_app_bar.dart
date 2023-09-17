@@ -57,7 +57,7 @@ class BottomAppBarCustomState extends State<BottomAppBarCustom> {
               color: widget.selectedIndex == index
                   ? widget.selectedColor
                   : widget.color,
-              onPressed: (int index) => widget.onTabSelected(index),
+              onTabSelected: widget.onTabSelected,
               height: widget.height,
             );
           })
@@ -90,7 +90,7 @@ class TabItemBottomBar extends StatelessWidget {
     super.key,
     required this.item,
     required this.index,
-    required this.onPressed,
+    required this.onTabSelected,
     required this.color,
     required this.height,
     required this.iconSize,
@@ -98,7 +98,7 @@ class TabItemBottomBar extends StatelessWidget {
 
   final BottomAppBarItem item;
   final int index;
-  final ValueChanged<int> onPressed;
+  final ValueChanged<int> onTabSelected;
   final Color color;
   final double height;
   final double iconSize;
@@ -111,7 +111,7 @@ class TabItemBottomBar extends StatelessWidget {
         child: Material(
           type: MaterialType.transparency,
           child: InkWell(
-            onTap: () => onPressed(index),
+            onTap: () => onTabSelected(index),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,

@@ -36,17 +36,14 @@ class HomeScreen extends StatelessWidget {
                 ActionButton(
                   action: () {
                     context.read<ThemeBloc>().changeTheme(AppTheme.normal);
-                    Navigator.pushNamed(
-                      context,
-                      Routes.hiddenDrawerBottomBarFab,
-                    );
+                    const HiddenDrawerRoute().replace(context);
                   },
                   label: 'Hidden menu with FAB in bottom bar',
                 ),
                 ActionButton(
                   action: () {
                     context.read<ThemeBloc>().changeTheme(AppTheme.normal);
-                    Navigator.pushNamed(context, Routes.spaceConceptOnboarding);
+                    // const HiddenDrawerRoute().replace(context);
                   },
                   label: 'Space Concept',
                 ),

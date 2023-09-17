@@ -675,7 +675,7 @@ class _SeachBar extends StatelessWidget {
                   ),
                 ),
               ),
-              const Icon(Icons.close, color: Colors.transparent)
+              const Icon(Icons.close, color: Colors.black)
             ],
           ),
         ),

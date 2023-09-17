@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutterchallenges/modules/space_concept/widgets/bottom_bar.dart';
 import 'package:flutterchallenges/modules/space_concept/widgets/pick_to_option.dart';
 import 'package:flutterchallenges/modules/space_concept/widgets/top_bar.dart';
+
+import '../../gen/assets.gen.dart';
 
 /// space concept widget
 /// show Earth with diffrent animations
@@ -59,7 +60,7 @@ class _ExploreBody extends StatelessWidget {
                   left: size.width * .1,
                   bottom: 30,
                 ),
-                child: SvgPicture.asset('assets/space_concept/arrow_back.svg'),
+                child: Assets.spaceConcept.arrowBack.svg(),
               ),
             ),
             Expanded(
@@ -70,7 +71,7 @@ class _ExploreBody extends StatelessWidget {
                     child: const Stack(
                       clipBehavior: Clip.none,
                       alignment: Alignment.bottomCenter,
-                      children: [
+                      children: <Widget>[
                         _Atmosphere(),
                         _PlanetMediaItem(),
                       ],
@@ -162,11 +163,8 @@ class _PlanetMediaItem extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return Hero(
       tag: 'earth',
-      child: Image.asset(
-        'assets/space_concept/earth_planet_with_shadow_clip.png',
-        fit: BoxFit.contain,
-        width: size.width,
-      ),
+      child: Assets.spaceConcept.earthPlanetWithShadowClip
+          .image(fit: BoxFit.contain, width: size.width),
     );
   }
 }

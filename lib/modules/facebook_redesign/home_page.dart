@@ -82,7 +82,7 @@ class _PostCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            children: [
+            children: <Widget>[
               AvatarProfile(radius: size.width * .044, image: userImage),
               const SizedBox(width: 10),
               _TopInformationAndActionButtons(name: userName),
@@ -477,6 +477,7 @@ class _FriendStory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5),
       child: Column(
@@ -519,7 +520,7 @@ class _FriendStory extends StatelessWidget {
             child: Text(
               name,
               style: TextStyle(
-                color: Theme.of(context).textTheme.bodyMedium?.color,
+                color: theme.textTheme.bodyMedium?.color,
                 fontSize: 12,
               ),
             ),

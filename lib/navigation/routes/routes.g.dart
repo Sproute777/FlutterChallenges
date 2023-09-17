@@ -7,9 +7,55 @@ part of 'routes.dart';
 // **************************************************************************
 
 List<RouteBase> get $appRoutes => [
-      $travelRootRoute,
+      $hiddenDrawerRoute,
       $selectRoute,
+      $travelRootRoute,
     ];
+
+RouteBase get $hiddenDrawerRoute => GoRouteData.$route(
+      path: '/hiden-drawer',
+      factory: $HiddenDrawerRouteExtension._fromState,
+    );
+
+extension $HiddenDrawerRouteExtension on HiddenDrawerRoute {
+  static HiddenDrawerRoute _fromState(GoRouterState state) =>
+      const HiddenDrawerRoute();
+
+  String get location => GoRouteData.$location(
+        '/hiden-drawer',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $selectRoute => GoRouteData.$route(
+      path: '/',
+      factory: $SelectRouteExtension._fromState,
+    );
+
+extension $SelectRouteExtension on SelectRoute {
+  static SelectRoute _fromState(GoRouterState state) => const SelectRoute();
+
+  String get location => GoRouteData.$location(
+        '/',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
 
 RouteBase get $travelRootRoute => GoRouteData.$route(
       path: '/travel-app',
@@ -60,26 +106,4 @@ extension $TravelCountryRouteExtension on TravelCountryRoute {
 
   void replace(BuildContext context) =>
       context.replace(location, extra: $extra);
-}
-
-RouteBase get $selectRoute => GoRouteData.$route(
-      path: '/',
-      factory: $SelectRouteExtension._fromState,
-    );
-
-extension $SelectRouteExtension on SelectRoute {
-  static SelectRoute _fromState(GoRouterState state) => const SelectRoute();
-
-  String get location => GoRouteData.$location(
-        '/',
-      );
-
-  void go(BuildContext context) => context.go(location);
-
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
-
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
-
-  void replace(BuildContext context) => context.replace(location);
 }
