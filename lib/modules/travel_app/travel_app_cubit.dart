@@ -4,27 +4,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterchallenges/modules/travel_app/country.dart';
 
 class TravelAppCubit extends Cubit<TravelAppState> {
-  TravelAppCubit() : super(const TravelAppState()) {
-    init(countriesData);
-  }
-  bool enableChangeTopScrollPosition = true;
-
-  void init(List<Country> countries) {
-    emit(TravelAppState(countries: countries));
-  }
+  TravelAppCubit() : super(const TravelAppState());
 
   void changeCountry(int index) {
     emit(state.copy(selected: index));
-  }
-
-  void finishUpdateCountry() {
-    enableChangeTopScrollPosition = true;
   }
 }
 
 class TravelAppState extends Equatable {
   const TravelAppState({
-    this.countries = const <Country>[],
+    this.countries = countriesData,
     this.selected = 0,
   });
   final List<Country> countries;

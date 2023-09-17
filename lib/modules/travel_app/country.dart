@@ -66,8 +66,8 @@ class Hotel {
   final String image;
 }
 
-List<Country> countriesData = [
-  const Country(
+const List<Country> countriesData = <Country>[
+  Country(
     name: 'Japon',
     image: 'assets/travel_app/card_left.png',
     reviewer: 'Leslie Alexander',
@@ -103,7 +103,7 @@ List<Country> countriesData = [
       ],
     ),
   ),
-  const Country(
+  Country(
     name: 'Africa',
     image: 'assets/travel_app/card_central.png',
     reviewer: 'Leslie Alexander',
@@ -139,7 +139,7 @@ List<Country> countriesData = [
       ],
     ),
   ),
-  const Country(
+  Country(
     name: 'Turkey',
     image: 'assets/travel_app/card_right.png',
     reviewer: 'Leslie Alexander',
@@ -175,7 +175,7 @@ List<Country> countriesData = [
       ],
     ),
   ),
-  const Country(
+  Country(
     name: 'Italy',
     image: 'assets/travel_app/italy.png',
     reviewer: 'Leslie Alexander',
@@ -211,7 +211,7 @@ List<Country> countriesData = [
       ],
     ),
   ),
-  const Country(
+  Country(
     name: 'Italy2',
     image: 'assets/travel_app/italy.png',
     reviewer: 'Leslie Alexander',
@@ -247,7 +247,7 @@ List<Country> countriesData = [
       ],
     ),
   ),
-  const Country(
+  Country(
     name: 'West',
     image: 'assets/travel_app/west_asia.png',
     reviewer: 'Leslie Alexander',
@@ -283,7 +283,7 @@ List<Country> countriesData = [
       ],
     ),
   ),
-  const Country(
+  Country(
     name: 'West2',
     image: 'assets/travel_app/west_asia.png',
     reviewer: 'Leslie Alexander',
