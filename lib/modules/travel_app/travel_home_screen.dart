@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,8 +41,23 @@ class TravelHomeScreen extends StatelessWidget {
   }
 }
 
-class _BottomBar extends StatelessWidget {
+class _BottomBar extends StatefulWidget {
   const _BottomBar();
+
+  @override
+  State<_BottomBar> createState() => _BottomBarState();
+}
+
+class _BottomBarState extends State<_BottomBar> {
+  int selected = 0;
+
+  void _onSelected(int? index) {
+    if (index != null) {
+      setState(() {
+        selected = index;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,50 +65,25 @@ class _BottomBar extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
       height: size.height * .07,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(300),
-        color: const Color(0xfff37f10),
-      ),
-      child: Row(
-        children: [
-          _BottomBarItem(
-            icon: Assets.travelApp.explore.path,
-            isSelected: true,
+      child: CupertinoSlidingSegmentedControl(
+        groupValue: selected,
+        children: <int, Widget>{
+          0: Icon(
+            Icons.explore,
+            color: selected == 0 ? Colors.black : Colors.grey,
           ),
-          _BottomBarItem(icon: Assets.travelApp.star.path),
-          _BottomBarItem(icon: Assets.travelApp.profile.path),
-        ],
-      ),
-    );
-  }
-}
-
-class _BottomBarItem extends StatelessWidget {
-  const _BottomBarItem({
-    required this.icon,
-    this.isSelected = false,
-  });
-
-  final String icon;
-  final bool isSelected;
-
-  @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    return Expanded(
-      child: Container(
-        height: size.height * .05,
-        margin: const EdgeInsets.symmetric(horizontal: 10),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(300),
-          color: isSelected ? Colors.white : Colors.transparent,
-        ),
-        child: SvgPicture.asset(
-          icon,
-          fit: BoxFit.fitHeight,
-          height: size.height * .025,
-        ),
+          1: Icon(
+            Icons.star,
+            color: selected == 1 ? Colors.black : Colors.grey,
+          ),
+          2: Icon(
+            Icons.person,
+            color: selected == 2 ? Colors.black : Colors.grey,
+          )
+        },
+        onValueChanged: _onSelected,
+        backgroundColor: const Color(0xfff37f10),
+        thumbColor: Colors.yellowAccent,
       ),
     );
   }
