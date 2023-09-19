@@ -13,7 +13,7 @@ List<RouteBase> get $appRoutes => [
     ];
 
 RouteBase get $hiddenDrawerRoute => GoRouteData.$route(
-      path: '/hiden-drawer',
+      path: '/hidden-drawer',
       factory: $HiddenDrawerRouteExtension._fromState,
     );
 
@@ -22,7 +22,7 @@ extension $HiddenDrawerRouteExtension on HiddenDrawerRoute {
       const HiddenDrawerRoute();
 
   String get location => GoRouteData.$location(
-        '/hiden-drawer',
+        '/hidden-drawer',
       );
 
   void go(BuildContext context) => context.go(location);

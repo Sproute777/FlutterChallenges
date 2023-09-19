@@ -24,8 +24,9 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   build_runner: ^2.4.6
-  flutter_gen_runner: ^5.3.1
+  # flutter_gen_runner: ^5.3.1
   go_router_builder: ^2.3.2
+  r_flutter: ^0.9.0
 
 flutter:
   uses-material-design: true
@@ -80,16 +81,21 @@ flutter:
           weight: 700
         - asset: fonts/hybi11_amigo/Hybi11-Amigo-Light.ttf
           weight: 500
+# flutter_gen:
+#   output: lib/gen/ # Optional (default: lib/gen/)
+#   line_length: 80 # Optional (default: 80)
 
-flutter_gen:
-  output: lib/gen/ # Optional (default: lib/gen/)
-  line_length: 80 # Optional (default: 80)
+#   integrations:
+#     flutter_svg: true
+#     flare_flutter: true
+#     rive: true
+#     lottie: true
 
-  integrations:
-    flutter_svg: true
-    flare_flutter: true
-    rive: true
-    lottie: true
-
-  assets:
-    enabled: true
+#   assets:
+#     enabled: true
+r_flutter:
+  add_file_path_comments: true # default is true
+  asset_classes:
+    ".svg":
+    import: asset_classes.dart
+    class: SvgFile
