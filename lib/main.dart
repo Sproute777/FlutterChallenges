@@ -4,8 +4,6 @@ import 'package:flutterchallenges/modules/facebook_redesign/blocs/theme_bloc.dar
 import 'package:flutterchallenges/navigation/router.dart';
 import 'package:go_router/go_router.dart';
 
-import 'assets.dart';
-
 void main() => runApp(
       const MyApp(),
     );
@@ -28,7 +26,7 @@ class _MyAppView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final a = Images.avatar;
+    // final t = Assets.
     return BlocBuilder<ThemeBloc, ThemeState>(
       builder: (context, state) {
         return MaterialApp.router(

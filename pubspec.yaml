@@ -91,11 +91,10 @@ flutter:
 #     rive: true
 #     lottie: true
 
-#   assets:
-#     enabled: true
+# flutter pub run r_flutter:generate
 r_flutter:
   add_file_path_comments: true # default is true
   asset_classes:
     ".svg":
-    import: asset_classes.dart
-    class: SvgFile
+      import: "asset_classes.dart"
+      class: "AssetSvg"

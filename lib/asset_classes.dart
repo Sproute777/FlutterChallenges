@@ -1,5 +1,4 @@
-class SvgFile {
+class AssetSvg {
+  const AssetSvg(this.path);
   final String path;
-  // ignore: sort_constructors_first
-  const SvgFile(this.path);
 }
